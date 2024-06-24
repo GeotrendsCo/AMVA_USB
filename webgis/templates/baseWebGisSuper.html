@@ -1,0 +1,257 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    
+    {% load static %}
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'libs\bootstrap-5.0.2-dist\css\bootstrap.min.css' %}">
+    <script src="{% static 'libs\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js' %}"></script>
+    <!-- Custom Webgis Style Sheet -->
+    <link rel="stylesheet" href="{% static 'css/webgis.css' %}">
+    <!-- Fontawsome -->
+    <script src="https://kit.fontawesome.com/a036caa48c.js" crossorigin="anonymous"></script>
+    <!-- JQuery -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <!-- Mapbox -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css"
+        type="text/css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js"></script>
+    <!-- TURF -->
+    <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-light navbar-expand">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src="{% static 'img/logo.png' %}" alt="" height="50">
+                </a>
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav me-3">
+                    {% if user.profile.usercode %}
+                    <li class="nav-item">
+                        {% if viewSwitch %}
+                        <a class="nav-link" href="/webGisApi/tableroBI/">
+                            Tablero BI
+                            <i class="fa-solid fa-chart-simple"></i>
+                        </a>
+                        {% else %}
+                        <a class="nav-link" href="/webGisApi/apiHome/">
+                            Api Mapa
+                            <i class="fa-solid fa-map-location"></i>
+                        </a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item dropdown" id="userDropdown">
+                        <a class="nav-link dropdown-toggle" role="button" href="#" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{ user.username }}
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item disabled" href="#"> {{ user.username }} </a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li> <a class="dropdown-item" href="/webGisApi/userEdit"> Mi perfil </a></li>
+                            {% if user.is_staff %}
+                            <li> <a class="dropdown-item" href="/webGisApi/backOffice/"> Gestión <i
+                                        class="fa-solid fa-users"></i> </a></li>
+                            {% endif %}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li> <a class="dropdown-item" href="/webGisApi/userLogout/"> Salir <i
+                                        class="fa-solid fa-right-from-bracket"></i> </a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item dropdown" id="userDropdown">
+                        <a class="nav-link dropdown-toggle" role="button" href="#" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{ user.username }}
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item disabled" href="#"> {{ user.username }} </a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <!-- <li> <a class="dropdown-item" href="#"> Me perfil </a></li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li> <a class="dropdown-item" href="/webGisApi/backOffice/"> Gestión <i
+                                class="fa-solid fa-users"></i> </a></li> -->
+                            <li> <a class="dropdown-item" href="/webGisApi/userLogout/"> Salir <i
+                                        class="fa-solid fa-right-from-bracket"></i> </a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <button onclick="modalHelp()" class="btn nav-link">
+                            Ayuda
+                            <i class="fa-solid fa-circle-question ms-1"></i>
+                        </button>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item">
+                        <a class="nav-link d-flex justify-content-center align-items-center" href="/crudSystem/login/">
+                            Ingresar <i class="fa-solid fa-right-to-bracket ms-1"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button onclick="modalHelp()" class="nav-link d-flex justify-content-center align-items-center">
+                            Ayuda
+                            <i class="fa-solid fa-circle-question ms-1"></i>
+                        </button>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    <script>
+        function spinnerWait() {
+            $('#modal-loading').modal('show');
+        }
+
+        function modalHelp() {
+            $('#modal-help').modal('show');
+        }
+    </script>
+
+    <div class="">
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Reporte de Actividad</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-bod text-center">
+                        <div class="">
+                            <iframe class="w-100" style="height: 75vh;" src='informe' frameborder="0"
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="modal-loading" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+            <div class="spinner-grow bg-light mx-1" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="spinner-grow bg-light mx-1" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div class="spinner-grow bg-light mx-1" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-help" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ayuda</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Si tiene algún inconveniente utilizando el aplicativo, por favor póngase en contacto con <a href="mailto:">Servicio Técnico</a>.
+                    <hr style="color: rgb(214, 214, 214);">
+                    <h6>Documentación del proyecto:</h6>
+                    <hr style="color: rgb(214, 214, 214);">
+                    <div class="m-1">                        
+                        <a class="me-1 text-decoration-none" href="{% static 'pdf/manual-usuario.pdf' %}" download="manual-usuario">
+                            <button class="btn btn-primary"><i class="fa-solid fa-download"></i></button>
+                        </a>
+                        <b>Manual de usuario</b>
+                    </div>
+                    <div class="m-1">                        
+                        <a class="me-1 text-decoration-none" href="{% static 'pdf/manual-tecnico.pdf' %}" download="manual-servidor">
+                            <button class="btn btn-primary"><i class="fa-solid fa-download"></i></button>
+                        </a>
+                        <b>Manual técnico - Servidor</b>
+                    </div>
+                    <div class="m-1">                        
+                        <a class="me-1 text-decoration-none" href="{% static 'pdf/manual-gestion-usuarios.pdf' %}" download="manual-gestión-usuarios">
+                            <button class="btn btn-primary"><i class="fa-solid fa-download"></i></button>
+                        </a>
+                        <b>Crear, editar o borrar usuarios</b>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loader Spinner -->
+    <div id="spinLoaderId" class="spinLoader">
+        <div class="loaderText text-center">
+            <div class="row spinner-border text-light" role="status"></div>
+            <div class="row">
+                <p class="text-light ms-2"><b>Cargando puntos...</b></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer class="col-12">
+        <div class="text-center">
+            © 2023 Copyright Área Metropolitana del Valle de Aburrá y Universidad de San Buenaventura Medellín. Todos
+            los
+            derechos reservados.
+            <!-- <a class="" href="">Área Metropolitana del Valle de Aburrá</a> -->
+        </div>
+        <div class="text-center mb-2">
+            <em>Powered by Geotrends & ENA | 2024</em>
+        </div>
+    </footer>
+
+    <!-- Custom -->
+    <script src="{% static 'assets\map.js' %}"></script>
+    <script src="{% static 'assets\calculate.js' %}"></script>
+    <script src="{% static 'assets\doubleSlide.js' %}"></script>
+    <script src="{% static 'assets\singleSlide.js' %}"></script>
+    <script src="{% static 'assets\resetRoadSliders.js' %}"></script>
+    <script src="{% static 'assets\switchRefMap.js' %}"></script>
+
+    <!-- Motor Calculo -->
+    <script src="{% static 'assets/motorCalculo.js' %}"></script>
+    <script src="{% static 'assets/selectPolygon.js' %}"></script>
+    <script src="{% static 'assets/deployMap.js' %}"></script>
+    <script src="{% static 'assets/createColorBar.js' %}"></script>
+    <script src="{% static 'assets/modificarArea.js' %}"></script>
+    <script src="{% static 'assets/enviarFormConsulta.js' %}"></script>
+
+</body>
+
+</html>

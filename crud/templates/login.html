@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingreso{% endblock %}
+
+{% block content %}
+<!-- Login-->
+<div class="card bg-light shadow mt-4">
+    <div class="card-body">
+        <div class="card-title text-center">
+            <h3>¡Bienvenido!</h3>
+            <p>Por favor inicie sesión</p>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <!-- Email input -->
+            <div class="input-group mb-3">
+                <span class="input-group-text align-items-center" id="usernm">
+                    <i class="fa-solid fa-user" style="color: rgb(48, 48, 48);"></i>
+                </span>
+                <input name="username" type="text" class="form-control" placeholder="Usuario"
+                    aria-label="Username or email" aria-describedby="usernm" required>
+            </div>
+
+            <!-- Password input -->
+            <div class="input-group mb-3">
+                <span class="input-group-text d-flex align-items-center" id="passwrd">
+                    <i class="fa-solid fa-lock" style="color: rgb(48, 48, 48);"></i>
+                </span>
+                <input name="password" type="password" class="form-control" placeholder="Contraseña"
+                    aria-label="Username" aria-describedby="passwrd" required>
+            </div>
+
+            <!-- Register buttons -->
+            <!-- <div class="text-center mb-3">
+                <p><a href="/crudSystem/register">Olvidé mi contraseña</a></p>
+            </div> -->
+            
+            {% if userTrigger == 1 %}
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center align-items-center mb-3"
+                    style="color: rgb(110, 224, 106);">
+                    <!-- <span class="fa-solid fa-circle-check"></span> &nbsp -->
+                    <b> {{ userExists }} </b>
+                </div>
+            </div>
+            {% endif %}
+            {% if userTrigger == 2 %}
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center align-items-center mb-3"
+                    style="color: rgb(218, 96, 121);">
+                    <span class="fa-solid fa-circle-exclamation"></span> &nbsp
+                    <b> {{ userExists }} </b>
+                </div>
+            </div>
+            {% endif %}
+            <button type="submit" class="col-12 text-light btn btn-block mb-4 btn-custom">Ingresar</button>
+
+            <!-- Register buttons -->
+            <!-- <div class="text-center">
+                <p>¿No estás registrado? <a href="/crudSystem/register">Registro</a></p>
+                <p><a href="/crudSystem/recoverPassword/">Olvidé mi contraseña</a></p>
+            </div> -->
+        </form>
+    </div>
+</div>
+{% endblock %}

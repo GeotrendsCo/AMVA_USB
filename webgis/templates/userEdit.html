@@ -1,0 +1,154 @@
+{% extends 'baseWebGisUser.html' %}
+{% block content %}
+
+<!-- Content wrapper page content -->
+<div class="content-wrapper mb-4 py-4">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Perfil</h1>
+                </div>
+                <div class="col-sm-12">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="apiHome" class="text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Regresar</a></li>
+                        <li class="breadcrumb-item active">Perfil usuario</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card card-primary card-outline mb-3">
+                        <div class="card-body box-profile">
+                            <h4 class="profile-username text-center">{{user.first_name}} {{user.last_name}}</h4>
+                            <p class="text-muted text-center">{{user.username}}</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Acerca de mi</h4>
+                        </div>
+
+                        <div class="card-body">
+                            <strong><i class="fas fa-key mr-1"></i> Acceso</strong>
+                            <p class="text-muted">
+                                {% if user.profile.usercode %}
+                                <b class="text-success">Activo</b>
+                                {% else %}
+                                <b class="text-danger">Inactivo</b>
+                                {% endif %}
+                            </p>
+                            <hr>
+                            <strong><i class="fas fa-envelope mr-1"></i> Correo</strong>
+                            <p class="text-muted">
+                                <span class="tag tag-danger">{{user.email}}</span>
+                            </p>
+                            <hr>
+                            <strong><i class="fas fa-globe mr-1"></i> País</strong>
+                            <p class="text-muted">{{user.profile.country}}</p>
+                            <hr>
+                            <strong><i class="fas fa-city mr-1"></i> Ciudad</strong>
+                            <p class="text-muted">
+                                <span class="tag tag-danger">{{user.profile.city}}</span>
+                            </p>
+                            <hr>
+                            <strong><i class="fas fa-building mr-1"></i> Entidad</strong>
+                            <p class="text-muted">
+                                <span class="tag tag-danger">{{user.profile.entity}}</span>
+                            </p>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header p-2">
+                            <!-- <ul class="nav nav-pills">
+                                <li class="nav-item"><a class="nav-link active" data-toggle="tab">Información</a>
+                                </li>
+                            </ul> -->
+                            <h5>Información</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="tab-content">
+                                    <div class="active tab-pane">
+                                        <form action="" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                                            <div class="form-group row py-2">
+                                                <label for="inputEmail" class="col-sm-2 col-form-label">Entidad</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control text-body-tertiary" id="inputEmail"
+                                                         value="{{user.profile.entity}}" name="entity">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row py-2">
+                                                <label for="inputName2" class="col-sm-2 col-form-label">País</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control text-body-tertiary" id="inputName2"
+                                                         value="{{user.profile.country}}" name="country">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row py-2">
+                                                <label for="inputExperience" class="col-sm-2 col-form-label">Ciudad</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control text-body-tertiary" id="inputName2"
+                                                         value="{{user.profile.city}}" name="city">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row py-2">
+                                                <label for="inputExperience" class="col-sm-2 col-form-label">Correo</label>
+                                                <div class="col-sm-10">
+                                                    <input type="email" class="form-control text-body-tertiary" id="inputName2"
+                                                         value="{{user.email}}" name="email">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row py-2">
+                                                <label for="inputSkills" class="col-sm-2 col-form-label">Contraseña vieja</label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" class="form-control text-body-tertiary" id="inputSkills"
+                                                        placeholder="Contraseña vieja" value="" name="old_password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row py-2">
+                                                <label for="inputSkills" class="col-sm-2 col-form-label">Contraseña nueva</label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" class="form-control text-body-tertiary" id="inputSkills"
+                                                        placeholder="Contraseña nueva" name="password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row py-2">
+                                                <label for="inputSkills" class="col-sm-2 col-form-label">Confirmar contraseña</label>
+                                                <div class="col-sm-10">
+                                                    <input type="password" class="form-control text-body-tertiary" id="inputSkills"
+                                                        placeholder="Verificar contraseña" name="verify_password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="offset-sm-2 col-sm-10 col-xs12 col-lg-1 my-3">
+                                                    <div class="d-grid gap-2">
+                                                        <button type="submit" class="btn btn-custom">Editar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- End page content -->
+
+{% endblock %}

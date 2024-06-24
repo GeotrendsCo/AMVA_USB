@@ -1,0 +1,7 @@
+.carImageCustom {
+    opacity: 0.8;
+}
+
+.inner-bottom-shadow {
+    box-shadow: inset 0px -10px 15px rgba(0, 0, 0, 0.3);
+}

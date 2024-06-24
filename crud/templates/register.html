@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="row">
+    <div class="bg-danger text-center">
+      {{error}}
+    </div>
+  </div>
+  <div class="card bg-light my-5 px-5 shadow">
+    <div class="">
+      <h4 class="text-center mt-3">Registro</h4>
+      <div class="row">
+        <div class="col-lg-6 col-md-12">
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text align-items-center" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-user text-secondary"></i></span>
+            <input required name="username" type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Usuario">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text align-items-center" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-user text-secondary"></i></span>
+            <input required name="first_name" type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Nombres">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-user text-secondary"></i></span>
+            <input required name="last_name" type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Apellidos">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-envelope text-secondary"></i></span>
+            <input required name="email" type="email" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Correo">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-envelope text-secondary"></i></span>
+            <input required name="verify_email" type="email" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Verificar correo">
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-earth-americas text-secondary"></i></span>
+            <input required name="country" type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="País">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-location-dot text-secondary"></i></span>
+            <input required name="city" type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Ciudad">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-user-group text-secondary"></i></span>
+            <input required name="entity" type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Entidad/Organización">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-lock text-secondary"></i></span>
+            <input required name="password" type="password" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Contraseña">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                class="fa-solid fa-lock text-secondary"></i></span>
+            <input required name="verify_password" type="password" class="form-control"
+              aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
+              placeholder="Verificar contraseña">
+          </div>
+          <div class="input-group input-group-default my-4">
+            <span class="input-group-text" id="inputGroup-sizing-lg">
+              <i class="fa-solid fa-key"></i>
+            </span>
+            <input required name="secret_code" type="text" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-lg" placeholder="Código secreto">
+          </div>
+        </div>
+      </div>
+      <div class="row align-items-center justify-content-center my-3">
+        <div class="col-lg-12 col-md-12">
+          <div class="d-grid gap-2">
+            <button class="col-12 text-light btn btn-block btn-custom mb-4" type="submit">Registrar</button>
+          </div>
+        </div>
+      </div>
+      <div class="row m-auto">
+        <div class="col-12 d-flex justify-content-center align-items-center mb-3">
+          <div class="text-center">
+            <p>Ya estoy registrado <a class="px-2" href="/crudSystem/login">Ingresar</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

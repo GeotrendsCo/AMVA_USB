@@ -1,0 +1,13 @@
+footer {
+    /* background-color: #0060B6; */
+    min-height: 10vh;
+}
+
+.nav-shadow {
+    box-shadow: inset 0px -10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-custom {
+    background-color: #7DB928;
+    font-weight: bold;
+}

@@ -1,0 +1,249 @@
+{% extends 'baseWebGisUser.html' %}
+{% block content %}
+
+<div class="row my-2" style="height: 90vh;">
+    <!-- MAPA CONTAINER -->
+    <div class="col-9">
+        <div class="map-container">
+            <div id="map" class="rounded border border-dark shadow"></div>
+            <div id="conventions">
+                <b class="mb-2">Nivel de Presión Sonora <em>LAeq (dB)</em></b>
+                <div id="colorBar" class=""></div>
+            </div>
+            <div id="mapIndicator" class="px-2"><b>Mapa desplegado: </b>Base</div>
+        </div>
+    </div>
+
+    <!-- BARRA DE HERRAMIENTAS -->
+    <div class="col-3 rounded border bg-light border-dark overflow-scroll" style="height: 100%;">
+        <!-- MODULO BIENVENIDO -->
+        <div class="row mx-1 mt-2 d-flex justify-content-center align-items-center">
+            <h5 class="card-title">Bienvenido <em style="color: rgb(87, 87, 87);">{{user.username}}</em></h5>
+            <p>Plataforma Interactiva para la visualización de mapas de ruido asociado al tráfico rodado</p>
+
+        </div>
+
+        <hr class="mt-2">
+        <!-- MODULO DE SELECCIÓN DE POLÍGONO (MODIFICAR AREA) -->
+
+        <div id="reDrawPolygon" class="row mx-1" style="display: none;">
+            <h5 class="card-title" style="color: rgb(87, 87, 87);">Área de consulta</h5>
+            <p class="card-text">Para modificar el área de trabajo, por favor de clic en el siguiente botón y seleccione
+                otro polígono.</p>
+            <button id="reDrawPolygonButton" class="btn btn-custom my-1" style="width: auto;">
+                Modificar área
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+        </div>
+
+        <!-- MODULO DE SELECCIÓN DE POLÍGONO -->
+        <div id="polygonSelectionModule" class="row">
+            <div class="row mx-1 d-flex justify-content-center align-items-center">
+                <h5 class="card-title" style="color: rgb(87, 87, 87);">Área de consulta</h5>
+                <p class="card-text">Defina un área en el mapa para realizar una consulta de información.*</p>
+                <div id="custom-controls" class="row">
+                    <p style="font-weight: 500;">Define un área en el mapa.</p>
+                    <button id="custom-draw-btn" class="btn btn-custom m-1" style="width: auto;">
+                        Dibujar <i class="fa-solid fa-draw-polygon"></i>
+                    </button>
+                    <button id="custom-edit-btn" class="btn btn-custom m-1" style="width: auto;" disabled>
+                        Editar <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button id="custom-trash-btn" class="btn btn-custom m-1" style="width: auto;" disabled>
+                        Borrar <i class="fa-solid fa-eraser"></i>
+                    </button>
+                    <em>* Solamente puede seleccionar un (1) área de trabajo en el mapa.</em>
+                </div>
+                <div class="row mt-1">
+                    <p class="mt-2" style="font-weight: 500;">Despliega el mapa de ruido correspondiente al tráfico
+                        rodado para el año 2022**.</p>
+                    <button id="custom-polyCalculate-btn" class="btn btn-custom m-1" style="width: auto;">
+                        Desplegar
+                        <i class="fa-solid fa-check-to-slot"></i>
+                    </button>
+                    <em>** Los mapas de ruido se actualizan cada cuatro (4) años, según lo establecido por la Resolución
+                        0627 de 2006. Última actualización 2022.</em>
+                </div>
+            </div>
+        </div>
+
+        <hr class="mt-2">
+
+        <div id="hideBeforePolygon">
+
+            <!-- MODULO DE CONSULTA -->
+            <div class="row mx-1 d-flex justify-content-center align-items-center">
+                <h5 class="card-title" style="color: rgb(87, 87, 87);">Registro histórico</h5>
+                <p class="card-text">Seleccione el rango de fecha y horario de consulta para la información histórica.*
+                </p>
+
+                <form id="formularioConsulta" class="col" style="min-height: 100%;" method="POST">
+                    {% csrf_token %}
+                    <!-- Filtro fecha -->
+                    <div class="row">
+                        <!-- Fecha inicial -->
+                        <div class="col-6">
+                            <label for="initialDate">Fecha inicial</label>
+                            <input name="iDate" type="date" class="form-control" id="initialDate" placeholder="Inicial"
+                                value="" min="2019-01-01" max="2019-12-31" autocomplete="off" required>
+                        </div>
+                        <!-- Fecha final -->
+                        <div class="col-6">
+                            <label for="finalDate">Fecha final</label>
+                            <input name="fDate" type="date" class="form-control" id="finalDate" placeholder="Final"
+                                value="" min="2019-01-01" max="2019-12-31" autocomplete="off" required>
+                        </div>
+                    </div>
+
+                    <!-- Filtro hora mapa -->
+                    <div class="row my-3">
+                        <div class="col">
+                            <div class="">
+                                <select name="timeRange" id="timeRange" class="form-select"
+                                    aria-label="Default select example" style="cursor: pointer;" required>
+                                    <option selected disabled value="">-Seleccione rango horario</option>
+                                    <option value="1">Diurno (R0627)</option>
+                                    <option value="2">Nocturno (R0627)</option>
+                                    <option value="3">Personalizado</option>
+                                </select>
+                            </div>
+                            <div class="range mt-4">
+                                <div class="range-slider">
+                                    <span class="range-selected"></span>
+                                    <span class="range-selected1"></span>
+                                </div>
+                                <div class="range-input">
+                                    <input name="iHour" type="range" min="0" max="23" value="0" step="1" id="lower"
+                                        disabled>
+                                    <input name="fHour" type="range" min="0" max="23" value="23" step="1" id="upper"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div class="row mt-2" style="font-size: 12px;">
+                                <div class="col-4">
+                                    <p id="rangeInputText1">00h00</p>
+                                </div>
+                                <div class="col-4 text-center d-flex justify-content-center">
+                                    <span id="selectTypeIcon"></span>
+                                    <p id="selectType">--</p>
+                                </div>
+                                <div class="col-4 d-flex justify-content-end">
+                                    <p id="rangeInputText2">23h00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <button id="search-submit-btn" type="submit" class="btn btn-custom"
+                            style="width: auto; display: block;">Consultar <i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                    <div id="searchSpinnerLoader" class="mb-3"
+                        style="display: flex; flex-wrap: nowrap; align-items: center; display: none;">
+                        <div class="spinner-grow" style="height: 10px; width: 10px;"></div>
+                        <div class="">Cargando...</div>
+                    </div>
+                </form>
+                <div id="searchInfo" class="card mb-1" style="display: none;">
+                    <div class="card-header">
+                        <b>Información de consulta</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">
+                            <b>Fecha inicial:</b>
+                            <div id="searchInitialDate"></div>
+                            <b>Fecha final:</b>
+                            <div id="searchFinalDate"></div>
+                            <b>Rango horario:</b>
+                            <div id="searchHourRange"></div>
+                            <b>Consulta realizada:</b>
+                            <div id="searchCurrentDate"></div>
+                            <em>La información consultada corresponde al año 2019.</em>
+                            <button id="newSearch" class="btn btn-custom mt-2" style="width: auto;">Nueva consulta <i
+                                    class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        &copy AMVA 2024
+                    </div>
+                </div>
+                <p><em>* información correspondiente a reportes de aforo del proyecto CITRA.</em></p>
+                <p><em>* Si no ha realizado una consulta, la información desplegada corresponde al mapa de ruido vigente
+                        (2022).</em></p>
+            </div>
+
+            <hr class="mt-2">
+
+            <!-- MÓDULO DE CONTRIBUCIÓN DE VÍAS -->
+            <div class="row mx-1 d-flex justify-content-start align-items-center">
+                <h5 class="card-title" style="color: rgb(87, 87, 87);">Variación del flujo vehícular</h5>
+                <p class="card-text">Ajuste el porcentaje de contribución del aforo vehicular (reducción o aumento),
+                    según la tipología de vía, para evaluar las variaciones en los niveles de ruido.</p>
+                <div class="row mt-2 mb-2">
+                    <button onclick="resetRoads()" class="btn btn-custom" style="width: auto;">
+                        Reestablecer
+                        <i class="fa-solid fa-rotate-left"></i></button>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <label for="road1" class="">Autopista</label>
+                    <input name="road1" id="road1" type="range" class="simpleRange" value="0" min="-100" max="100"
+                        step="1">
+                    <p id="roadText1">Value: 0 %</p>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <label for="road2" class="">Arteria Principal</label>
+                    <input name="road2" id="road2" type="range" class="simpleRange" value="0" min="-100" max="100"
+                        step="1">
+                    <p id="roadText2">Value: 0 %</p>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <label for="road3" class="">Arteria Menor</label>
+                    <input name="road3" id="road3" type="range" class="simpleRange" value="0" min="-100" max="100"
+                        step="1">
+                    <p id="roadText3">Value: 0 %</p>
+                </div>
+
+                <div class="col-lg-6 text-center">
+                    <label for="road4" class="">Colectoras</label>
+                    <input name="road4" id="road4" type="range" class="simpleRange" value="0" min="-100" max="100"
+                        step="1">
+                    <p id="roadText4">Value: 0 %</p>
+                </div>
+
+                <div class="col-lg-6 text-center">
+                    <label for="road5" class="">Servicio</label>
+                    <input name="road5" id="road5" type="range" class="simpleRange" value="0" min="-100" max="100"
+                        step="1">
+                    <p id="roadText5">Value: 0 %</p>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="form-check form-switch">
+                        <input id="switchMap" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Ver mapa de referencia*</label>
+                    </div>
+                    <p><em>* El mapa de referencia corresponde con el mapa de ruido oficial 2022.</em></p>
+                </div>
+            </div>
+
+            <hr class="mt-2">
+
+            <!-- MÓDULO DE REPORTE -->
+            <div class="row me-2 mx-1 d-flex justify-content-start align-items-center">
+                <h5 class="card-title" style="color: rgb(87, 87, 87);">Reporte</h5>
+                <p class="card-text">Genera un reporte detallado con la información de la consulta.</p>
+                <div class="row d-flex justify-content-start">
+                    <button onclick="" class="btn btn-custom" style="width: auto;">Generar reporte <i
+                            class="fa-solid fa-file-export ms-1"></i></button>
+                </div>
+            </div>
+
+            <hr class="mt-2">
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'baseWebGisSuper.html' %}
+{% block content %}
+<h2>Sistema de gestión de usuarios</h2>
+<div class="row">
+    <div class="col-4 card ms-3">
+        <div class="card-body">
+            <h4 class="card-title">Generar codigo de registro</h4>
+            <div class="card-text">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <span class="input-group-text align-items-center" id="newUserEmail">
+                            <i class="fa-solid fa-envelope"></i>
+                        </span>
+                        <input name="newUserEmail" type="email" class="form-control"
+                            placeholder="Correo electrónico de nuevo usuario" aria-label="Correo"
+                            aria-describedby="newUserEmail" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text align-items-center" id="registerExpirationDays">
+                            <i class="fa-solid fa-clock"></i>
+                        </span>
+                        <input name="registerExpirationDays" type="number" class="form-control"
+                            placeholder="Tiempo de caducidad [días]" aria-label=""
+                            aria-describedby="registerExpirationDays" required>
+                    </div>
+                    {%if generarCodigo %}
+                    <p><b>Correo: </b>{{emailRegister}}</p>
+                    <p><b>Código: </b>{{displayTemporalRegisterLink}}</p>
+                    <p><b>Fecha de caducidad: </b>{{expirationTime}}</p>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-secondary">Generar código</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card my-4 w-100">
+    <div class="card w-100 border-0">
+        <div class="card-body">
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" id="inputGroup-sizing-lg"><i
+                        class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-lg" placeholder="Buscar usuario ...">
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Usuario</th>
+                    <th>Correo</th>
+                    <th>Organización</th>
+                    <th>Actividad</th>
+                </thead>
+                <tbody>
+                    {% for user_ in users %}
+                    {% if user_.username != user.username %}
+                    <tr>
+                        <td>{{user_.first_name}}</td>
+                        <td>{{user_.last_name}}</td>
+                        <td>{{user_.username}}</td>
+                        <td>{{user_.email}}</td>
+                        <td>{{user_.profile.entity}}</td>
+                        <td class="align-items-end">
+                            <div class="d-grid d-flex gap-1 col mx-auto justify-content-end">
+                                {% if user_.profile.usercode %}
+                                <a href="activate/{{user_.username}}" class="btn btn-success px-3 w-100"
+                                    type="button">Desactivar</a>
+                                {% else %}
+                                <a href="activate/{{user_.username}}" class="btn btn-secondary px-3 w-100"
+                                    type="button">Activar</a>
+                                {% endif %}
+                                <a href="delete/{{user_.username}}" class="btn btn-danger px-3 w-100"
+                                    onclick="return confirm('Estas seguro?')">Eliminar</a>
+                            </div>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mt-3 w-100 border-0 align-items-end">
+        <div class="card-body">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

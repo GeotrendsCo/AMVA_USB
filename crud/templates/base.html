@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    {% load static %}
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'libs\bootstrap-5.0.2-dist\css\bootstrap.min.css' %}">
+    <script src="{% static 'libs\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js' %}"></script>
+    <!-- Custom Crud Style Sheet -->
+    <link rel="stylesheet" href="{% static 'css/crud.css' %}">
+    <!-- Fontawsome -->
+    <script src="https://kit.fontawesome.com/a036caa48c.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-light nav-shadow" style="background-color: #ffffff;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src=" {% static 'img/logo.png' %}" alt="" height="50">
+                </a>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer class="col-12 d-flex align-items-center justify-content-center">
+        <div class="text-center">
+            © 2023 Copyright Área Metropolitana del Valle de Aburrá y Universidad de San Buenaventura Medellín. Todos los derechos reservados.
+            <!-- <a class="" href="">Área Metropolitana del Valle de Aburrá</a> -->
+        </div>
+    </footer>
+</body>
+</html>

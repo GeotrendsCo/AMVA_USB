@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webgis AMVA</title>
+
+  {% load static %}
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'libs\bootstrap-5.0.2-dist\css\bootstrap.min.css' %}">
+  <script src="{% static 'libs\bootstrap-5.0.2-dist\js\bootstrap.bundle.min.js' %}"></script>
+  <!-- Custom Crud Style Sheet -->
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+  <!-- Fontawsome -->
+  <script src="https://kit.fontawesome.com/a036caa48c.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-dark inner-bottom-shadow" style="background-color: white;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="{% static 'img/logo.png' %}" alt="" height="50">
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Carousel -->
+  <div id="carouselExampleControls" class="carousel slide d-none d-md-block shadow" data-bs-ride="carousel"
+    style="background-color: black;">
+    <div class="carousel-inner">
+      <!-- <div class="carousel-item">
+        <img src="{% static 'img/Slider1.jpg' %}" class="d-block w-100 carImageCustom" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h1>Aplicativo de actualización de mapas de ruido interactivos</h1>
+          <p>Ingrese y comience a usar nuestro aplicativo de mapas de ruido interactivos.</p>
+          <a href="/webGisApi/apiHome/" class="btn text-light"
+            style="background-color: #0060B6; width: 20%;">Ingresar</a>
+          <a href="/crudSystem/login/" class="btn text-light" style="background-color: #0060B6; width: 20%;">Iniciar
+            sesión</a>
+        </div>
+      </div> -->
+      <div class="carousel-item active">
+        <img src="{% static 'img/Slide2.jpg' %}" class="d-block w-100 carImageCustom" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h1>Plataforma Interactiva para la visualización de mapas de ruido asociado al tráfico vehicular</h1>
+          <a href="/webGisApi/apiHome/" class="btn text-light"
+            style="background-color: #7DB928; width: 20%;">Ingresar</a>
+          <a href="/crudSystem/login/" class="btn text-light" style="background-color: #7DB928; width: 20%;">Iniciar
+            sesión</a>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/Slide3.jpg' %}" class="d-block w-100 carImageCustom" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h1>Registros históricos de la red de monitoreo de ruido.</h1>
+          <a href="/webGisApi/apiHome/" class="btn text-light"
+            style="background-color: #7DB928; width: 20%;">Ingresar</a>
+          <a href="/crudSystem/login/" class="btn text-light" style="background-color: #7DB928; width: 20%;">Iniciar
+            sesión</a>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row d-flex justify-content-center align-items-center" style="min-height: 35vh;">
+
+      <div class="col-md-8 p-4">
+        <div class="card border-dark shadow" style="min-height: 100%;">
+          <div class="card-body">
+            <h5 class="card-title">
+              Nuestro aplicativo
+            </h5>
+            <p class="card-text">
+              Bienvenido a nuestra <b>plataforma interactiva para la visualización de mapas de ruido asociado al tráfico
+                rodado.</b></p>
+            <p class="card-text">Con la aplicación puedes seleccionar un área y desplegar los niveles de ruido producto
+              del producto del
+              tráfico vehicular, que componen los Mapas de Ruido actualizados por el AMVA para el 2022.</p>
+            <p class="card-text">También, podrás consultar históricos y simular cambios en el tráfico vehicular por
+              tipología de via, para
+              comprender el impacto del ruido.</p>
+            <p class="card-text">Diseñado para gestores del territorio e interesados, nuestra plataforma buscar ofrecer
+              una herramienta
+              para la gestión del ruido y la planificación urbana</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="col-12 mt-3 mb-3">
+    <div class="text-center">
+      © 2023 Copyright Área Metropolitana del Valle de Aburrá y Universidad de San Buenaventura Medellín. Todos los
+      derechos reservados.
+      <!-- <a class="" href="">Área Metropolitana del Valle de Aburrá</a> -->
+    </div>
+    <!-- <div class="text-center mb-2">
+      <em>Powered by Geotrends & ENA | 2024</em>
+    </div> -->
+  </footer>
+</body>
+
+</html>

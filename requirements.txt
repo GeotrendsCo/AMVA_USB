@@ -50,7 +50,7 @@ Pillow==10.0.1
 platformdirs==4.2.2
 prompt_toolkit==3.0.47
 psutil==6.0.0
-psycopg2==2.9.9
+# psycopg2==2.9.9
 pure-eval==0.2.2
 pycparser==2.21
 pydyf==0.8.0

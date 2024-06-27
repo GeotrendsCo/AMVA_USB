@@ -177,7 +177,7 @@ def filtrarPuntos(request):
         vertices = json.loads(vertices_json)
 
         # Cargar el archivo GeoJSON
-        with open('webgis/static/assets/AMVA.json', 'r') as f:
+        with open('AMVA_USB/webgis/static/assets/AMVA.json', 'r') as f:
             geojson = json.load(f)
 
         # Filtrar los puntos en el polígono
@@ -200,7 +200,7 @@ def filterGeoTimeStamp (request):
             finalHour = int(request.POST.get('fHour'))
             timeRange = int(request.POST.get('timeRange'))
 
-            geoJson = pd.read_csv('webgis/static/assets/factorModificacion.csv')
+            geoJson = pd.read_csv('AMVA_USB/webgis/static/assets/factorModificacion.csv')
             geoJson['timeStamp'] = pd.to_datetime(geoJson['timeStamp'])
 
             startDateFil = pd.to_datetime(startDate)

@@ -8,6 +8,13 @@ var menor = document.querySelector('#road3')
 var colectora = document.querySelector('#road4')
 var servicio = document.querySelector('#road5')
 
+var autopistaFactor = null;
+var principalFactor = null;
+var colectoraFactor = null;
+var menorFactor = null;
+var servicioFactor = null;
+var isAforo = false;
+
 var roadText1 = document.getElementById('roadText1')
 var roadText2 = document.getElementById('roadText2')
 var roadText3 = document.getElementById('roadText3')
@@ -63,7 +70,7 @@ function calculateRadiusBasedOnZoom(zoom) {
     return minRadius + (maxRadius - minRadius) * (1 - (zoom - minZoom) / (maxZoom - minZoom));
 }
 
-function refreshZoom () {
+function refreshZoom() {
     var currentZoom = map.getZoom();
     var radius = calculateRadiusBasedOnZoom(currentZoom);
     // Update the circle radius
@@ -88,7 +95,7 @@ async function displayMap(vertices) {
     document.getElementById('spinLoaderId').style.display = 'none';
     $('#mapIndicator').toggle()
     document.getElementById('mapIndicator').innerHTML = '<b>Mapa de ruido Oficial AMVA 2022</b>'
-    
+
     draw.trash();
     $('#hideBeforePolygon').toggle();
     $('#reDrawPolygon').toggle();
@@ -129,82 +136,87 @@ async function displayMap(vertices) {
     });
 
     map.on('zoom', refreshZoom);
-    
+
     autopista.oninput = function () {
+        isAforo = true
         valueRoadTypeUpdate(roadText1, autopista.value)
         valueRoadTypeUpdate(roadText2, principal.value)
         valueRoadTypeUpdate(roadText3, menor.value)
         valueRoadTypeUpdate(roadText4, colectora.value)
         valueRoadTypeUpdate(roadText5, servicio.value)
-        var autopistaFactor = (autopista.value / 100.001) + 1;
-        var principalFactor = (principal.value / 100.001) + 1;
-        var colectoraFactor = (colectora.value / 100.001) + 1;
-        var menorFactor = (menor.value / 100.001) + 1;
-        var servicioFactor = (servicio.value / 100.001) + 1;
+        autopistaFactor = (autopista.value / 100.001) + 1;
+        principalFactor = (principal.value / 100.001) + 1;
+        colectoraFactor = (colectora.value / 100.001) + 1;
+        menorFactor = (menor.value / 100.001) + 1;
+        servicioFactor = (servicio.value / 100.001) + 1;
         for (let i = 0; i < baseMap.features.length; i++) {
             baseMap.features[i].properties.sumTotal = 10 * Math.log10(autopistaFactor * baseMap.features[i].properties.autopista + principalFactor * baseMap.features[i].properties.principal + menorFactor * baseMap.features[i].properties.menor + colectoraFactor * baseMap.features[i].properties.colectora + servicioFactor * baseMap.features[i].properties.servicio)
         }
         map.getSource("mapEngine").setData(baseMap);
     }
     principal.oninput = function () {
+        isAforo = true
         valueRoadTypeUpdate(roadText1, autopista.value)
         valueRoadTypeUpdate(roadText2, principal.value)
         valueRoadTypeUpdate(roadText3, menor.value)
         valueRoadTypeUpdate(roadText4, colectora.value)
         valueRoadTypeUpdate(roadText5, servicio.value)
-        var autopistaFactor = (autopista.value / 100.001) + 1;
-        var principalFactor = (principal.value / 100.001) + 1;
-        var colectoraFactor = (colectora.value / 100.001) + 1;
-        var menorFactor = (menor.value / 100.001) + 1;
-        var servicioFactor = (servicio.value / 100.001) + 1;
+        autopistaFactor = (autopista.value / 100.001) + 1;
+        principalFactor = (principal.value / 100.001) + 1;
+        colectoraFactor = (colectora.value / 100.001) + 1;
+        menorFactor = (menor.value / 100.001) + 1;
+        servicioFactor = (servicio.value / 100.001) + 1;
         for (let i = 0; i < baseMap.features.length; i++) {
             baseMap.features[i].properties.sumTotal = 10 * Math.log10(autopistaFactor * baseMap.features[i].properties.autopista + principalFactor * baseMap.features[i].properties.principal + menorFactor * baseMap.features[i].properties.menor + colectoraFactor * baseMap.features[i].properties.colectora + servicioFactor * baseMap.features[i].properties.servicio)
         }
         map.getSource("mapEngine").setData(baseMap);
     }
     menor.oninput = function () {
+        isAforo = true
         valueRoadTypeUpdate(roadText1, autopista.value)
         valueRoadTypeUpdate(roadText2, principal.value)
         valueRoadTypeUpdate(roadText3, menor.value)
         valueRoadTypeUpdate(roadText4, colectora.value)
         valueRoadTypeUpdate(roadText5, servicio.value)
-        var autopistaFactor = (autopista.value / 100.001) + 1;
-        var principalFactor = (principal.value / 100.001) + 1;
-        var colectoraFactor = (colectora.value / 100.001) + 1;
-        var menorFactor = (menor.value / 100.001) + 1;
-        var servicioFactor = (servicio.value / 100.001) + 1;
+        autopistaFactor = (autopista.value / 100.001) + 1;
+        principalFactor = (principal.value / 100.001) + 1;
+        colectoraFactor = (colectora.value / 100.001) + 1;
+        menorFactor = (menor.value / 100.001) + 1;
+        servicioFactor = (servicio.value / 100.001) + 1;
         for (let i = 0; i < baseMap.features.length; i++) {
             baseMap.features[i].properties.sumTotal = 10 * Math.log10(autopistaFactor * baseMap.features[i].properties.autopista + principalFactor * baseMap.features[i].properties.principal + menorFactor * baseMap.features[i].properties.menor + colectoraFactor * baseMap.features[i].properties.colectora + servicioFactor * baseMap.features[i].properties.servicio)
         }
         map.getSource("mapEngine").setData(baseMap);
     }
     colectora.oninput = function () {
+        isAforo = true
         valueRoadTypeUpdate(roadText1, autopista.value)
         valueRoadTypeUpdate(roadText2, principal.value)
         valueRoadTypeUpdate(roadText3, menor.value)
         valueRoadTypeUpdate(roadText4, colectora.value)
         valueRoadTypeUpdate(roadText5, servicio.value)
-        var autopistaFactor = (autopista.value / 100.001) + 1;
-        var principalFactor = (principal.value / 100.001) + 1;
-        var colectoraFactor = (colectora.value / 100.001) + 1;
-        var menorFactor = (menor.value / 100.001) + 1;
-        var servicioFactor = (servicio.value / 100.001) + 1;
+        autopistaFactor = (autopista.value / 100.001) + 1;
+        principalFactor = (principal.value / 100.001) + 1;
+        colectoraFactor = (colectora.value / 100.001) + 1;
+        menorFactor = (menor.value / 100.001) + 1;
+        servicioFactor = (servicio.value / 100.001) + 1;
         for (let i = 0; i < baseMap.features.length; i++) {
             baseMap.features[i].properties.sumTotal = 10 * Math.log10(autopistaFactor * baseMap.features[i].properties.autopista + principalFactor * baseMap.features[i].properties.principal + menorFactor * baseMap.features[i].properties.menor + colectoraFactor * baseMap.features[i].properties.colectora + servicioFactor * baseMap.features[i].properties.servicio)
         }
         map.getSource("mapEngine").setData(baseMap);
     }
     servicio.oninput = function () {
+        isAforo = true
         valueRoadTypeUpdate(roadText1, autopista.value)
         valueRoadTypeUpdate(roadText2, principal.value)
         valueRoadTypeUpdate(roadText3, menor.value)
         valueRoadTypeUpdate(roadText4, colectora.value)
         valueRoadTypeUpdate(roadText5, servicio.value)
-        var autopistaFactor = (autopista.value / 100.001) + 1;
-        var principalFactor = (principal.value / 100.001) + 1;
-        var colectoraFactor = (colectora.value / 100.001) + 1;
-        var menorFactor = (menor.value / 100.001) + 1;
-        var servicioFactor = (servicio.value / 100.001) + 1;
+        autopistaFactor = (autopista.value / 100.001) + 1;
+        principalFactor = (principal.value / 100.001) + 1;
+        colectoraFactor = (colectora.value / 100.001) + 1;
+        menorFactor = (menor.value / 100.001) + 1;
+        servicioFactor = (servicio.value / 100.001) + 1;
         for (let i = 0; i < baseMap.features.length; i++) {
             baseMap.features[i].properties.sumTotal = 10 * Math.log10(autopistaFactor * baseMap.features[i].properties.autopista + principalFactor * baseMap.features[i].properties.principal + menorFactor * baseMap.features[i].properties.menor + colectoraFactor * baseMap.features[i].properties.colectora + servicioFactor * baseMap.features[i].properties.servicio)
         }

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('filterGeoTimeStampApi/',views.filterGeoTimeStamp,name='filterGeoTimeStampApi'),
@@ -12,5 +13,9 @@ urlpatterns = [
     path('backOffice/activate/<username>', views.userActivate, name='activate'),
     path('backOffice/delete/<username>', views.userDelete, name='delete'),
     path('apiHome/informe', views.report),
-    path('userEdit', views.userEdit)
+    path('userEdit', views.userEdit),
+    path('report/',views.generateReport)
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

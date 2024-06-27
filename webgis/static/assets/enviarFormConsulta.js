@@ -1,3 +1,6 @@
+var isConsulta = false;
+var factoresConsulta = null
+
 // Obtener el token CSRF del cookie
 function getCookie(name) {
     var cookieValue = null;
@@ -66,11 +69,19 @@ $('#formularioConsulta').submit(function (event) {
         $('#search-submit-btn').toggle()
         document.getElementById('mapIndicator').innerHTML = '<b>Mapa desplegado:</b> <em>Información consulta año 2019</em>'
     }, 2000);
+    isConsulta = true;
 });
 
 function actualizarValoresConsulta(response) {
     // Actualizar mapa a la consulta del usuario
     // console.log('Respuesta del servidor:', response);
+    factoresConsulta = {
+        autopista: response['Autopista'],
+        principal: response['Arteria Ppal'],
+        menor: response['Arteria menor'],
+        colectora: response['Colectora'],
+        servicio: response['Servicio']
+    }
     for (let i = 0; i < baseMap.features.length; i++) {
         baseMap.features[i].properties.sumTotal = 10 * Math.log10(response['Autopista'] * baseMap.features[i].properties.autopista + response['Arteria Ppal'] * baseMap.features[i].properties.principal + response['Arteria menor'] * baseMap.features[i].properties.menor + response['Colectora'] * baseMap.features[i].properties.colectora + response['Servicio'] * baseMap.features[i].properties.servicio)
     }

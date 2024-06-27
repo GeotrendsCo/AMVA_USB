@@ -1,3 +1,5 @@
+let puntosFiltrados_deployMap = null
+let polygonVertices_deployMap = null
 // Obtener las coordenadas de los vértices del polígono
 function getPolygonVertices() {
     // Obtener todas las capas dibujadas en el mapa
@@ -16,6 +18,7 @@ function getPolygonVertices() {
         });
     });
 
+    polygonVertices_deployMap = vertices
     return vertices;
 }
 
@@ -36,7 +39,7 @@ async function obtenerYProcesarPuntosFiltrados(vertices) {
 
         // Aquí puedes hacer algo con los datos filtrados, por ejemplo, asignarlos a una variable
         var puntosFiltrados = data;
-
+        puntosFiltrados_deployMap = JSON.parse(JSON.stringify(puntosFiltrados))
         // Devolver los puntos filtrados
         return puntosFiltrados;
     } catch (error) {

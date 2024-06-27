@@ -1,3 +1,5 @@
+var isAforo = false;
+
 function valueRoadTypeUpdate(elem, value) {
     elem.innerHTML = 'Value: ' + value + ' %';
 };

@@ -31,7 +31,7 @@ generateReport.addEventListener('click', async (e) => {
             postData.polygon = polygonVertices_deployMap;
         }
 
-        let response = await fetch('AMVA_USB/webGisApi/report/', {
+        let response = await fetch('/AMVA_USB/webGisApi/report/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

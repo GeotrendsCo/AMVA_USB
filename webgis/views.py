@@ -326,7 +326,11 @@ def generateReport(request):
     if request.method == 'POST':
         try:
             body_unicode = request.body.decode('utf-8')
+            print('prier body')
+            print(body_unicode)
             body_data = json.loads(body_unicode)
+            print('segundo body')
+            print(body_data)
 
             puntosGeoJson = body_data.get('puntos')
             polygonVertices = body_data.get('polygon')

@@ -592,7 +592,8 @@ def generateReport(request):
 
             buffer.seek(0)
 
-            response = HttpResponse(buffer, content_type='application/pdf')
+            # response = HttpResponse(buffer, content_type='application/pdf')
+            response = HttpResponse(mimetype='application/pdf')
             response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
 
             return response

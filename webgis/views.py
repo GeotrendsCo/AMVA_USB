@@ -594,7 +594,8 @@ def generateReport(request):
 
             response = HttpResponse(content_type='application/pdf')
             # response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
-            response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
+            # response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
+            response['Content-Disposition'] = 'filename="reporte.pdf"'
 
             return response
         
